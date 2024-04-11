@@ -11,9 +11,15 @@ app.get('',(_,res)=>{
 
 app.get('/profile',(_,res)=>{
     const user ={
-        name:'mihir',email:'mihirdave35@gmail.com'
+        name:'mihir',
+        email:'mihirdave35@gmail.com',
+        skils:['php','java','nodeJS','react','ajax']
     }
     res.render(`profile`,{user});
+})
+
+app.get('/login',(req,res)=>{
+    res.render(`login`);
 })
 
 app.get('/about',(_,res)=>{
