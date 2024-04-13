@@ -1,9 +1,7 @@
 const express = require('express');
 const reqFilter = require('./middleware');
 const app =express();
-const path = 
-
-('path');
+const path = ('path');
 const publicPath = path.join(__dirname,'public');
 // app.use(express.static(publicPath));
 app.set('view engine','ejs');
