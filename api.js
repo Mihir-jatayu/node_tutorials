@@ -6,7 +6,6 @@ const data = [
 module.exports=data;
 
 
-
 // const colors = require('colors');
 // console.log('hello'.green); 
 // const http = require('http');

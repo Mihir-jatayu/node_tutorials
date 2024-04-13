@@ -1,3 +1,6 @@
+const {MongoClient} = require('mongodb');
+const url = 'mongodb://localhost:27017';
+const client = new MongoClient(url);
 const express = require('express');
 const reqFilter = require('./middleware');
 const app =express();
