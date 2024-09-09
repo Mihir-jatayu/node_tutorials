@@ -7,8 +7,6 @@ const collection_name = 'user';
 const multer = require('multer');
 const upload = multer();
 
-
-let authToken = null;  // This will store the token after login
 let userArr = [];  
 
 
@@ -38,13 +36,18 @@ async function middleware(req, res, next) {
     }
 }
 
-// Middleware to check token for protected routes
 function isAuthenticated(req, res, next) {
-    const token = req.body.token;  // Expect the token to be passed in the request body
-    if (token && token === req.session.authToken) { // Compare with the session-stored token
-        next(); // Token matches, proceed to the next middleware/route handler
+    const authHeader = req.headers.authorization; // Access the Authorization header
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+        const token = authHeader.split(' ')[1]; // Extract the token from 'Bearer <token>'
+        
+        if (token === req.session.authToken) { // Compare with the session-stored token
+            next(); // Token matches, proceed to the next middleware/route handler
+        } else {
+            res.status(401).send('Unauthorized: Invalid token');
+        }
     } else {
-        res.status(401).send('Unauthorized: Invalid or missing token');
+        res.status(401).send('Unauthorized: Missing token');
     }
 }
 
@@ -61,14 +64,16 @@ http.post('/login', upload.none(),async (req, res, next) => {
     res.send({message: 'Login Successful', token: req.session.authToken , data:userArr });  // Send the token to the user
 });
 
-// Protected route: Get all user data, only accessible if the correct token is provided
-http.post('/getUserData',upload.none(),isAuthenticated, async (req, res) => {
+
+http.use(isAuthenticated);
+
+http.post('/getUserData',upload.none(), async (req, res) => {
     const response = await dbconnect(collection_name);
     const userData = await response.find().toArray();
     res.send(userData);
 });
 
-http.post('/addUserData',upload.none(),isAuthenticated, async (req, res) => {
+http.post('/addUserData',upload.none(), async (req, res) => {
     const response = await dbconnect(collection_name);
     const userData = await response.insertOne({
         name:req.body.name,
@@ -80,6 +85,21 @@ http.post('/addUserData',upload.none(),isAuthenticated, async (req, res) => {
     }else{
         res.send(`User Not Added ${userData}`);
     }
+});
+
+
+
+http.post('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).send('Failed to destroy the session');
+        }
+
+        // Optionally, clear the session cookie by setting its expiry
+        res.clearCookie('connect.sid'); // 'connect.sid' is the default session cookie name
+
+        res.send('Logged out successfully');
+    });
 });
 
 http.listen(2409)
