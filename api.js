@@ -14,7 +14,7 @@ http.use(session({
     secret: 'fa17bfeebab013203567d03dd053a939056ec93d527acaf4d47781498ec1ba880244bbc67ce423d4449c7b8fe3ff568052409cfb79f7db5b6d1fd02c5e256c8b', // Replace with your own secret key
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // Set to true if using HTTPS
+    cookie: { secure: true } // Set to true if using HTTPS
 }));
 
 // Middleware function for login validation
