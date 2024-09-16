@@ -5,6 +5,7 @@ const dbconnect = require('./mongodb');
 const session = require('express-session');
 const collection_name = 'user';
 const multer = require('multer');
+const { Console } = require('console');
 const upload = multer();
 
 let userArr = [];  
@@ -14,7 +15,10 @@ http.use(session({
     secret: 'fa17bfeebab013203567d03dd053a939056ec93d527acaf4d47781498ec1ba880244bbc67ce423d4449c7b8fe3ff568052409cfb79f7db5b6d1fd02c5e256c8b', // Replace with your own secret key
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true } // Set to true if using HTTPS
+    cookie: {
+        secure: false, // Set to true if using HTTPS
+        maxAge: 60000  // Session expires after 1 minute (60000 ms), adjust as needed
+    }
 }));
 
 // Middleware function for login validation
@@ -38,9 +42,8 @@ async function middleware(req, res, next) {
 
 function isAuthenticated(req, res, next) {
     const authHeader = req.headers.authorization; // Access the Authorization header
-    if (authHeader && authHeader.startsWith('Bearer ')) {
+    if (authHeader && authHeader.startsWith('Bearer')) {
         const token = authHeader.split(' ')[1]; // Extract the token from 'Bearer <token>'
-        
         if (token === req.session.authToken) { // Compare with the session-stored token
             next(); // Token matches, proceed to the next middleware/route handler
         } else {
@@ -66,6 +69,8 @@ http.post('/login', upload.none(),async (req, res, next) => {
 
 
 http.use(isAuthenticated);
+
+
 
 http.post('/getUserData',upload.none(), async (req, res) => {
     const response = await dbconnect(collection_name);
@@ -94,10 +99,8 @@ http.post('/logout', (req, res) => {
         if (err) {
             return res.status(500).send('Failed to destroy the session');
         }
-
         // Optionally, clear the session cookie by setting its expiry
         res.clearCookie('connect.sid'); // 'connect.sid' is the default session cookie name
-
         res.send('Logged out successfully');
     });
 });
