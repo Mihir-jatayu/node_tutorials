@@ -7,6 +7,7 @@ const collection_name = 'user';
 const multer = require('multer');
 const { Console } = require('console');
 const upload = multer();
+const cors = require('cors')
 
 let userArr = [];  
 
@@ -17,9 +18,11 @@ http.use(session({
     saveUninitialized: true,
     cookie: {
         secure: false, // Set to true if using HTTPS
-        maxAge: 60000  // Session expires after 1 minute (60000 ms), adjust as needed
+        maxAge: 10000000000  // Session expires after 1 minute (60000 ms), adjust as needed
     }
 }));
+
+http.use(cors());
 
 // Middleware function for login validation
 async function middleware(req, res, next) {
@@ -53,6 +56,28 @@ function isAuthenticated(req, res, next) {
         res.status(401).send('Unauthorized: Missing token');
     }
 }
+
+
+http.post('/signup',upload.none(), async (req, res) => {
+    try {
+        const response = await dbconnect(collection_name);
+        const userData = await response.insertOne({
+            name: req.body.name,
+            last_name: req.body.lastName,
+            Age: req.body.Age
+        });
+        if (userData.acknowledged) {
+            const getUserData = await response.findOne({ _id: userData.insertedId });
+
+            res.json({ success: true, message: 'User Added', data:getUserData });
+        } else {
+    
+            res.json({ success: false, message: 'User Not Added', data: userData });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'An error occurred', error: error.message });
+    }
+});
 
 // Login route with middleware
 http.post('/login', upload.none(),async (req, res, next) => {

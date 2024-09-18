@@ -1,8 +1,8 @@
-import { BrowserRouter,Switch,Route} from "react-router-dom";
+import { BrowserRouter,Routes,Route} from "react-router-dom";
 import Home from './component/home';
-import About from './component/about';
 import Navbar from './component/navbar';
-import profile from './component/user';
+import SignUp from './component/SignUp';
+import PrivatCom from './component/PrivatCom';
 import './App.css';
 
 function App() {
@@ -10,14 +10,16 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Navbar />
-        <Switch>
-          <Route exact path='/' component={Home} />
-          <Route exact path='/about' component={About} />
-          <Route exact path='/profile/:name' component={profile} />
-        </Switch>
-      
+        <Routes>
+          <Route element={<PrivatCom />}>
+          <Route path='/' element={<Home />} />
+          </Route>
+
+
+          <Route path='/signup' element={<SignUp/>} />
+          
+        </Routes>
       </BrowserRouter>
-      
     </div>
   );
 }

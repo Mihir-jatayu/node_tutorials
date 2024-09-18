@@ -26,6 +26,22 @@
 color: black;
 }
 
+
+.inputFiled{
+  display: block;
+  padding: 5px;
+  margin: 25px;
+
+}
+
+
+.subBtn{
+  display: block;
+  padding: 5px;
+  margin: 25px;
+
+}
+
 .nav-link:hover{
   color:greenyellow;
 }
