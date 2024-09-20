@@ -5,10 +5,10 @@ const dbconnect = require('./mongodb');
 const session = require('express-session');
 const collection_name = 'user';
 const multer = require('multer');
+const { Console } = require('console');
 const upload = multer();
+const cors = require('cors')
 
-
-let authToken = null;  // This will store the token after login
 let userArr = [];  
 
 
@@ -16,8 +16,13 @@ http.use(session({
     secret: 'fa17bfeebab013203567d03dd053a939056ec93d527acaf4d47781498ec1ba880244bbc67ce423d4449c7b8fe3ff568052409cfb79f7db5b6d1fd02c5e256c8b', // Replace with your own secret key
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // Set to true if using HTTPS
+    cookie: {
+        secure: false, // Set to true if using HTTPS
+        maxAge: 10000000000  // Session expires after 1 minute (60000 ms), adjust as needed
+    }
 }));
+
+http.use(cors());
 
 // Middleware function for login validation
 async function middleware(req, res, next) {
@@ -38,15 +43,41 @@ async function middleware(req, res, next) {
     }
 }
 
-// Middleware to check token for protected routes
 function isAuthenticated(req, res, next) {
-    const token = req.body.token;  // Expect the token to be passed in the request body
-    if (token && token === req.session.authToken) { // Compare with the session-stored token
-        next(); // Token matches, proceed to the next middleware/route handler
+    const authHeader = req.headers.authorization; // Access the Authorization header
+    if (authHeader && authHeader.startsWith('Bearer')) {
+        const token = authHeader.split(' ')[1]; // Extract the token from 'Bearer <token>'
+        if (token === req.session.authToken) { // Compare with the session-stored token
+            next(); // Token matches, proceed to the next middleware/route handler
+        } else {
+            res.status(401).send('Unauthorized: Invalid token');
+        }
     } else {
-        res.status(401).send('Unauthorized: Invalid or missing token');
+        res.status(401).send('Unauthorized: Missing token');
     }
 }
+
+
+http.post('/signup',upload.none(), async (req, res) => {
+    try {
+        const response = await dbconnect(collection_name);
+        const userData = await response.insertOne({
+            name: req.body.name,
+            last_name: req.body.lastName,
+            Age: req.body.Age
+        });
+        if (userData.acknowledged) {
+            const getUserData = await response.findOne({ _id: userData.insertedId });
+
+            res.json({ success: true, message: 'User Added', data:getUserData });
+        } else {
+    
+            res.json({ success: false, message: 'User Not Added', data: userData });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'An error occurred', error: error.message });
+    }
+});
 
 // Login route with middleware
 http.post('/login', upload.none(),async (req, res, next) => {
@@ -61,14 +92,18 @@ http.post('/login', upload.none(),async (req, res, next) => {
     res.send({message: 'Login Successful', token: req.session.authToken , data:userArr });  // Send the token to the user
 });
 
-// Protected route: Get all user data, only accessible if the correct token is provided
-http.post('/getUserData',upload.none(),isAuthenticated, async (req, res) => {
+
+http.use(isAuthenticated);
+
+
+
+http.post('/getUserData',upload.none(), async (req, res) => {
     const response = await dbconnect(collection_name);
     const userData = await response.find().toArray();
     res.send(userData);
 });
 
-http.post('/addUserData',upload.none(),isAuthenticated, async (req, res) => {
+http.post('/addUserData',upload.none(), async (req, res) => {
     const response = await dbconnect(collection_name);
     const userData = await response.insertOne({
         name:req.body.name,
@@ -80,6 +115,19 @@ http.post('/addUserData',upload.none(),isAuthenticated, async (req, res) => {
     }else{
         res.send(`User Not Added ${userData}`);
     }
+});
+
+
+
+http.post('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).send('Failed to destroy the session');
+        }
+        // Optionally, clear the session cookie by setting its expiry
+        res.clearCookie('connect.sid'); // 'connect.sid' is the default session cookie name
+        res.send('Logged out successfully');
+    });
 });
 
 http.listen(2409)
