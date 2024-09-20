@@ -14,10 +14,7 @@ function App() {
           <Route element={<PrivatCom />}>
           <Route path='/' element={<Home />} />
           </Route>
-
-
           <Route path='/signup' element={<SignUp/>} />
-          
         </Routes>
       </BrowserRouter>
     </div>
