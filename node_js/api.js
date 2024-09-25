@@ -8,6 +8,7 @@ const multer = require('multer');
 const { Console } = require('console');
 const upload = multer();
 const cors = require('cors')
+const UserController = require('./Controller/UserController');
 
 let userArr = [];  
 
@@ -17,8 +18,7 @@ http.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-        secure: false, // Set to true if using HTTPS
-        maxAge: 10000000000  // Session expires after 1 minute (60000 ms), adjust as needed
+        maxAge: 3600000  // Session expires after 1 minute (60000 ms), adjust as needed
     }
 }));
 
@@ -36,7 +36,7 @@ async function middleware(req, res, next) {
         const response = await dbconnect(collection_name);
         await response.updateOne({ name: userData[0].name }, { $set: { api_token: authToken } });
         
-        userArr = await response.find({ name: userData[0].name, Age: parseInt(userData[0].Age) }).toArray();
+        userArr = await response.find({ name: userData[0].name, Age: userData[0].Age }).toArray();
         next(); // Call the next middleware/route handler
     } else {
         res.send('User Name & Age Not Found'); // End the response here if no user data
@@ -61,10 +61,13 @@ function isAuthenticated(req, res, next) {
 http.post('/signup',upload.none(), async (req, res) => {
     try {
         const response = await dbconnect(collection_name);
+        const lastUser = await response.find().sort({ _id: -1 }).limit(1).toArray();
+        const newId = lastUser.length > 0 ? lastUser[0]._id + 1 : 1;
         const userData = await response.insertOne({
-            name: req.body.name,
-            last_name: req.body.lastName,
-            Age: req.body.Age
+            _id: newId,
+            name:req.body.name,
+            last_name:req.body.last_name,
+            Age:req.body.Age
         });
         if (userData.acknowledged) {
             const getUserData = await response.findOne({ _id: userData.insertedId });
@@ -84,7 +87,7 @@ http.post('/login', upload.none(),async (req, res, next) => {
     const user = req.body.user_name;
     const pass = req.body.Age;
     const response = await dbconnect(collection_name);
-    const userData = await response.find({ name: user, Age: parseInt(pass) }).toArray();
+    const userData = await response.find({ name: user, Age: pass }).toArray();
     
     req.userData = userData; // Attach userData to the request object to pass to middleware
     next(); // Pass control to the middleware
@@ -97,25 +100,10 @@ http.use(isAuthenticated);
 
 
 
-http.post('/getUserData',upload.none(), async (req, res) => {
-    const response = await dbconnect(collection_name);
-    const userData = await response.find().toArray();
-    res.send(userData);
-});
-
-http.post('/addUserData',upload.none(), async (req, res) => {
-    const response = await dbconnect(collection_name);
-    const userData = await response.insertOne({
-        name:req.body.name,
-        last_name:req.body.last_name,
-        Age:req.body.Age
-    });
-    if(userData.acknowledged){
-        res.send('User Added');
-    }else{
-        res.send(`User Not Added ${userData}`);
-    }
-});
+http.post('/getUserData',upload.none(),UserController.getUserList);
+http.post('/addUserData',upload.none(),UserController.addUser);
+http.post('/updateUserData',upload.none(),UserController.updateUser);
+http.post('/deleteUserData',upload.none(),UserController.deleteUser);
 
 
 
