@@ -1,43 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
+<!doctype html>
+<html>
+<head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="%PUBLIC_URL%/admin/theme/images/favicon.ico">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="%PUBLIC_URL%/admin/theme/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <link href="%PUBLIC_URL%/admin/theme/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="%PUBLIC_URL%/admin/theme/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css">
+    <link href="%PUBLIC_URL%/admin/theme/libs/spectrum-colorpicker2/spectrum.min.css" rel="stylesheet" type="text/css">
+    <link href="%PUBLIC_URL%/admin/theme/libs/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css">
+    <link href="%PUBLIC_URL%/admin/theme/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="%PUBLIC_URL%/admin/theme/libs/%40chenfengyuan/datepicker/datepicker.min.css">
+    
+    
+    <link href="%PUBLIC_URL%/admin/theme/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="%PUBLIC_URL%/admin/theme/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="%PUBLIC_URL%/admin/theme/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="%PUBLIC_URL%/admin/theme/libs/switchery/switchery.min.css" rel="stylesheet" type="text/css" />
+     
+     <link href="%PUBLIC_URL%/admin/theme/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    
+          <!-- Responsive datatable examples -->
+    <link href="%PUBLIC_URL%/admin/theme/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />     
+    <!-- App Css-->
+    <link href="%PUBLIC_URL%/admin/theme/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+    <!-- App js -->
+    <!-- {{-- <script src="%PUBLIC_URL%/admin/theme/js/plugin.js"></script> --}} -->
+    
+    <link rel="stylesheet" href="%PUBLIC_URL%/admin/theme/libs/owl.carousel/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="%PUBLIC_URL%/admin/theme/libs/owl.carousel/assets/owl.theme.default.min.css">
+    
+    <link href="%PUBLIC_URL%/admin/theme/dropzone/dropzone.min.css" rel="stylesheet" type="text/css"/>
+    
+  
+</head>
+<body data-sidebar="dark">
+  <div id="root">
+    <div id="layout-wrapper">
+    </div>
+  </div>
+  <script src="%PUBLIC_URL%/admin/theme/libs/jquery/jquery.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/metismenu/metisMenu.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/simplebar/simplebar.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/node-waves/waves.min.js"></script>
+  
+  <script src="admin/theme/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="admin/theme/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <!-- Buttons examples -->
+  <script src="%PUBLIC_URL%/admin/theme/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/jszip/jszip.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/pdfmake/build/pdfmake.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/pdfmake/build/vfs_fonts.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/dropzone/dropzone-min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/switchery/switchery.js"></script>
+  
+  <script src="%PUBLIC_URL%/admin/theme/libs/select2/js/select2.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/spectrum-colorpicker2/spectrum.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/%40chenfengyuan/datepicker/datepicker.min.js"></script>
+   <!-- form advanced init -->
+  <script src="%PUBLIC_URL%/admin/theme/js/pages/form-advanced.init.js"></script>
+  <!-- Responsive examples -->
+  <script src="%PUBLIC_URL%/admin/theme/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="%PUBLIC_URL%/admin/theme/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+  
+  <!-- Datatable init js -->
+  
+  <!-- Sweet Alerts js -->
+  <script src="%PUBLIC_URL%/admin/theme/libs/sweetalert2/sweetalert2.min.js"></script>
+  <!-- Sweet alert init js-->
+  <script src="%PUBLIC_URL%/admin/theme/js/pages/sweet-alerts.init.js"></script>
+  <!-- owl.carousel js -->
+  <script src="%PUBLIC_URL%/admin/theme/libs/owl.carousel/owl.carousel.min.js"></script>
+  
+  <!-- auth-2-carousel init -->
+  <script src="%PUBLIC_URL%/admin/theme/js/pages/auth-2-carousel.init.js"></script>
+  
+  <script src="%PUBLIC_URL%/admin/theme/js/pages/dashboard.init.js"></script>
+  
+  <script src="%PUBLIC_URL%/admin/theme/js/pages/datatables.init.js"></script>    
+  
+  <script src="%PUBLIC_URL%/admin/theme/js/app.js"></script>
+  <script src="%PUBLIC_URL%/admin/custom.js"></script>
+  
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+  <script src="%PUBLIC_URL%/admin/theme/js/jquery-validate/jquery.validate.min.js"></script>
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+  <script type="text/javascript" src="%PUBLIC_URL%/admin/theme/dropzone/dropzone.min.js"></script>
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+  
+  <script type="text/javascript" src="%PUBLIC_URL%/admin/theme/libs/chart.js/chart.umd.js"></script>
+</body>
 </html>
