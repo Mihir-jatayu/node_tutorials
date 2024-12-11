@@ -18,6 +18,9 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     sequelize,
     tableName: 'user_project_modules',
+    createdAt: 'created_at',  // Custom name for createdAt column
+    updatedAt: 'updated_at',  // Custom name for updatedAt column
+    deletedAt: 'deleted_at',  // Custom name for updatedAt column
     timestamps: true,
     paranoid: true,
     indexes: [

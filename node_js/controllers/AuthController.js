@@ -1,13 +1,13 @@
 // auth/login.js
 const bcrypt = require('bcryptjs');
-const { User } = require('../models/users'); // Assuming User model exists
+const sequelize = require('../config/database')
+const User = require('../models/users')(sequelize); // Assuming User model exists
 const { generateToken } = require('../utils/jwt'); // Import JWT utility
 
 module.exports.login = async (req, res) => {
   const { username, password } = req.body; // No need to use Object.assign here
-  console.log(req.body);
   try {
-    const user = await User.findOne({ where: { username:username } }); // Find user by username
+    const user = await User.findOne({ where: { username } }); // Find user by username
     console.log(user)
     if (user && await bcrypt.compare(password, user.password)) {
       const token = generateToken(user.id); // Generate JWT token for the user

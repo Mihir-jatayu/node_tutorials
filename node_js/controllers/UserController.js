@@ -1,7 +1,8 @@
 const bcrypt = require('bcryptjs');
- 
+const {Sequelize,DataTypes} = require('sequelize');
 const sequelize = require('../config/database');
 const User = require('../models/users')(sequelize);
+const userProjectModules = require('../models/user_project_modules')(sequelize,DataTypes);
 // Get list of usersrr
 module.exports.getUserList = async (req, res) => {
   try {
@@ -12,6 +13,17 @@ module.exports.getUserList = async (req, res) => {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+
+module.exports.getuserProjectModules = async (req, res)=>{
+  try {
+    const users = await userProjectModules.findAll(); // Fetch all users
+    return res.status(200).json(users); // Return users as JSON
+  } catch (err) {
+    console.error('Error fetching users:', err);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
 
 // Add user method with password hashing
 module.exports.addUser = async (req, res) => {
