@@ -13,7 +13,10 @@ const sequelize = require('./config/database'); // Sequelize instance
 
 const app = express();
 
-app.use(expressJSON());
+app.use(bodyParser.urlencoded({ extended: true }));  // This parses application/x-www-form-urlencoded data
+
+// Middleware to parse JSON requests (optional if you are also working with JSON data)
+app.use(bodyParser.json());  // Parses application/json data
 
 app.use(cors());
 
