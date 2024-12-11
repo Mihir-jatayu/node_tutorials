@@ -1,22 +1,15 @@
-// middleware/authMiddleware.js
-const { User } = require('../models/users');  // Import the User model
+const { verifyToken } = require('../utils/jwt');
 
-module.exports.isAuthenticated = async (req, res, next) => {
-  // Check if userId is stored in session
-  if (req.session.userId) {
-    try {
-      const user = await User.findByPk(req.session.userId); // Find user by the stored session userId
-
-      if (user) {
-        req.user = user;  // Attach the user object to the request for further use
-        return next();  // Proceed to the next middleware or route handler
-      } else {
-        return res.status(401).json({ message: 'Unauthorized: Invalid user' });
-      }
-    } catch (err) {
-      return res.status(500).json({ message: 'Error retrieving user', error: err.message });
-    }
+module.exports.isAuthenticated = (req, res, next) => {
+  const token = req.headers['authorization']?.split(' ')[1]; // Get token from Authorization header (Bearer token)
+  if (!token) {
+    return res.status(403).json({ success: false, message: 'Token is required' });
+  }
+  const decoded = verifyToken(token); // Verify the token
+  if (decoded) {
+    req.user = decoded; // Attach the decoded user data to request object
+    next(); // Proceed to next middleware or route handler
   } else {
-    return res.status(401).json({ message: 'Unauthorized: No session' });
+    return res.status(401).json({ success: false, message: 'Invalid or expired token' });
   }
 };
