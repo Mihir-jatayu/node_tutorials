@@ -1,31 +1,28 @@
 const express = require('express');
-const expressJSON = require('express').json; 
 const cors = require('cors');
-const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const multer = require('multer'); // File handling middleware
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
-const multer = require('multer');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const upload = multer().none(); // For multipart form data handling
-const sequelize = require('./config/database'); // Sequelize instance
-
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));  // This parses application/x-www-form-urlencoded data
+// Set up multer for handling form-data (without files)
+const upload = multer();
 
-// Middleware to parse JSON requests (optional if you are also working with JSON data)
-app.use(bodyParser.json());  // Parses application/json data
-
+// Ensure correct order of middleware
 app.use(cors());
+app.use(cookieParser());
 
-// User routes (with authentication protection)
-app.use('/user', upload, userRoutes);
+// Middleware to parse form data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-// Authentication routes
-app.use('/auth', upload, authRoutes);
+// Handle form data without files
+app.use('/user', upload.none(), userRoutes);  // Apply multer for user routes
+app.use('/auth', upload.none(), authRoutes);  // Apply multer for auth routes
 
+// Start the server
 app.listen(2409, () => {
   console.log('Server running on port 2409');
 });
