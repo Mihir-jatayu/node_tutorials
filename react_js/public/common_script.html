@@ -1,0 +1,117 @@
+<script type="text/javascript">
+	$(document).ready(function(){
+    // $(".date_range_picker").daterangepicker();
+
+    // $('.select2').select2();
+    //form validation
+    $(".needs-validation").validate({
+      ignore: [],
+      rules: {
+        //email: "required",
+      },
+      messages: {},
+      highlight: function (element, errorClass, validClass) {
+       var elem = $(element);
+       if (elem.hasClass("select2-hidden-accessible")) {
+           $("#select2-" + elem.attr("id") + "-container").parent().addClass(errorClass); 
+       } else {
+           elem.addClass(errorClass);
+       }
+     },    
+     unhighlight: function (element, errorClass, validClass) {
+         var elem = $(element);
+         if (elem.hasClass("select2-hidden-accessible")) {
+              $("#select2-" + elem.attr("id") + "-container").parent().removeClass(errorClass);
+         } else {
+             elem.removeClass(errorClass);
+         }
+     },
+     errorPlacement: function(error, element) {
+       var elem = $(element);
+       if (elem.hasClass("select2-hidden-accessible")) {
+           element = $("#select2-" + elem.attr("id") + "-container").parent(); 
+           error.insertAfter(element);
+       } else {
+           error.insertAfter(element);
+       }
+     },
+    });
+    
+    //form validation
+
+    //modal background click prevent
+    
+    // $('.modal').modal({
+    //        backdrop: 'static',
+    //        keyboard: false
+    // });
+
+    //modal background click prevent
+}); 
+
+$('body').on('keypress','.decimal-only',function(e){
+    if(e.which == 46){
+      if($(this).val().indexOf('.') != -1) {
+        return false;
+      }
+    }
+    if (e.which != 8 && e.which != 0 && e.which != 46 && (e.which < 48 || e.which > 57)) {
+      return false;
+    }
+});
+
+$('body').on('keypress','.integers-only',function(e){
+  if(e.which == 46){
+    if($(this).val().indexOf('.') != 0) {
+      return false;
+    }
+  }
+  if (e.which != 8 && e.which != 0 && e.which != 46 && (e.which < 48 || e.which > 57)) {
+    return false;
+  }
+});
+
+$('body').on('keyup','.prevent-zero',function(e){
+  if($(this).val().match(/^0/)){
+    $(this).val('');
+    return false;
+  }
+});
+
+
+function convertDateTimeFormat(inputDate) {
+            // Use regex to extract date and time components
+  var regex = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/;
+  var matches = inputDate.match(regex);
+
+  if (matches === null) {
+    return "Invalid date format";
+  }
+
+  var year = matches[1];
+  var month = matches[2];
+  var day = matches[3];
+  var hour = matches[4];
+  var minute = matches[5];
+  var second = matches[6];
+
+            // Format the date to d/m/Y H:i:s
+  var formattedDate = day + '/' + month + '/' + year + ' ' + hour + ':' + minute + ':' + second;
+
+  return formattedDate;
+}
+
+function convertDateFormat(inputDate) {
+  var regex = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/;
+  var matches = inputDate.match(regex);
+  if (matches === null) {
+    return "Invalid date format";
+  }
+  var year = matches[1];
+  var month = matches[2];
+  var day = matches[3];
+  var formattedDate = day + '/' + month + '/' + year;
+  return formattedDate;
+}
+        
+</script>
