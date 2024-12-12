@@ -23,8 +23,8 @@ app.use(upload.none())
 // Handle form data without files
 app.use('/auth',authRoutes);  // Apply multer for auth routes
 
-
 app.use(isAuthenticated); 
+
 app.use('/user',userRoutes);  // Apply multer for user routes
 
 // Start the server

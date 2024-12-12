@@ -20,6 +20,9 @@ module.exports = function(sequelize, DataTypes) {
     sequelize,
     tableName: 'project_modules',
     timestamps: true,
+    createdAt: 'created_at',  // Custom name for createdAt column
+    updatedAt: 'updated_at',  // Custom name for updatedAt column
+    deletedAt: 'deleted_at',  // Custom name for updatedAt column
     indexes: [
       {
         name: "PRIMARY",
