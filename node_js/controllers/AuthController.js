@@ -1,7 +1,8 @@
 // auth/login.js
 const bcrypt = require('bcryptjs');
+const {DataTypes} = require('sequelize');
 const sequelize = require('../config/database')
-const User = require('../models/users')(sequelize); // Assuming User model exists
+const User = require('../models/users')(sequelize,DataTypes); // Assuming User model exists
 const { generateToken } = require('../utils/jwt'); // Import JWT utility
 
 module.exports.login = async (req, res) => {

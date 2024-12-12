@@ -1,7 +1,7 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const  Sequelize  = require('sequelize');
 const bcrypt = require('bcryptjs'); // Import bcryptjs for hashing passwords
 
-module.exports = function(sequelize) {
+module.exports = function(sequelize,DataTypes) {
   const User = sequelize.define('users', {
     id: {
       autoIncrement: true,

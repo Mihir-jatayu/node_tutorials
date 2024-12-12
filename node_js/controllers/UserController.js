@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
-const {Sequelize,DataTypes} = require('sequelize');
+const {DataTypes} = require('sequelize');
 const sequelize = require('../config/database');
-const User = require('../models/users')(sequelize);
+const User = require('../models/users')(sequelize,DataTypes);
 const userProjectModules = require('../models/user_project_modules')(sequelize,DataTypes);
 // Get list of usersrr
 module.exports.getUserList = async (req, res) => {
